@@ -60,14 +60,14 @@ def version():
 
 
 @app.get("/history")
-def history():
+def get_history():
     logger.info(f"History check")
     items = list(reversed(history))
     return {"count": len(items), "max_size": HISTORY_SIZE, "items": items}
 
 
 @app.get("/stats")
-def stats():
+def get_stats():
     operations = stats["by_operation"]
     errors = stats["errors"]
     most_used = operations.most_common(1)

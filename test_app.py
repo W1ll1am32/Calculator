@@ -47,7 +47,7 @@ def test_divide_by_zero():
 
 
 def test_unknown_operation():
-    response = client.get("/power", params={"a": 2, "b": 3})
+    response = client.get("/something", params={"a": 2, "b": 3})
     assert response.status_code == 404
 
 
