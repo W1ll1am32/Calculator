@@ -18,7 +18,7 @@ logging.basicConfig(
     level=LOG_LEVEL,
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
 )
-logger = logging.getLogger("calculator")
+logger = logging.getLogger("[calculator]")
 logger.info("service_configured name=%s version=%s (precision=%d, history_size=%d)", APP_NAME, APP_VERSION, PRECISION, HISTORY_SIZE)
 
 app = FastAPI(title=APP_NAME, version=APP_VERSION)
@@ -39,6 +39,10 @@ stats = {
     "errors": Counter(),
     "session_start": datetime.now().isoformat(timespec="seconds"),
 }
+
+def reset_stats():
+    stats["operations"].clear()
+    stats["errors"].clear()
 
 
 @app.get("/")
@@ -68,16 +72,16 @@ def get_history():
 
 @app.get("/stats")
 def get_stats():
-    operations = stats["by_operation"]
+    operations = stats["operations"]
     errors = stats["errors"]
     most_used = operations.most_common(1)
     return {
         "started_at": stats["session_start"],
-        "total": sum(operations.values()),
-        "by_operation": dict(sorted(operations.items())),
+        "total_operations": sum(operations.values()),
+        "operations_type": dict(sorted(operations.items())),
         "most_used": most_used[0][0] if most_used else None,
-        "errors": sum(errors.values()),
-        "errors_by_type": dict(sorted(errors.items())),
+        "total_errors": sum(errors.values()),
+        "errors_type": dict(sorted(errors.items())),
     }
 
 

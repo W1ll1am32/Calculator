@@ -5,6 +5,13 @@ import app_final
 
 client = TestClient(app_final.app)
 
+@pytest.fixture(autouse=True)
+def clean_state():
+    app_final.history.clear()
+    app_final.reset_stats()
+    yield
+    app_final.history.clear()
+    app_final.reset_stats()
 
 def test_health():
     response = client.get("/health")
@@ -59,3 +66,16 @@ def test_missing_parameter():
 def test_not_a_number():
     response = client.get("/add", params={"a": "abc", "b": 1})
     assert response.status_code == 422
+
+def test_stats_at_start():
+    body = client.get("/stats").json()
+    assert body["total"] == 0
+    assert body["errors"] == 0
+    assert body["most_used"] is None
+    assert body["by_operation"] == {}
+
+def test_history_at_start():
+    response = client.get("/history")
+    assert response.status_code == 200
+    assert response.json()["count"] == 0
+    assert response.json()["items"] == []

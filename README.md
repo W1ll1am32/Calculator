@@ -4,6 +4,20 @@
 
 **Для кого:** небольшой учебный шаблон для разработчиков.
 
+## Функционал
+
+6 операций калькулятора: 
+ - "/add": a + b
+ - "/subtract": a - b
+ - "/multiply": a * b
+ - "/divide": a / b
+ - "/power": a**b
+ - "/root": a**(1/b)
+
+История операций - "/history"
+
+Статистика пользования - "/stats"
+
 ## Установка
 
 Python 3.10+.
@@ -54,3 +68,8 @@ curl http://127.0.0.1:8000/version
 ```
 
 Логи пишутся в терминал, где запущен `uvicorn`.
+
+Пример лога:
+```
+2026-10-26 16:32:56,318 INFO [calculator] service_configured name=Calculator version=1.0.0 (precision=4, history_size=10)
+```
