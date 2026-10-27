@@ -69,10 +69,11 @@ def test_not_a_number():
 
 def test_stats_at_start():
     body = client.get("/stats").json()
-    assert body["total"] == 0
-    assert body["errors"] == 0
+    assert body["total_operations"] == 0
+    assert body["total_errors"] == 0
     assert body["most_used"] is None
-    assert body["by_operation"] == {}
+    assert body["operations_type"] == {}
+    assert body["errors_type"] == {}
 
 def test_history_at_start():
     response = client.get("/history")
